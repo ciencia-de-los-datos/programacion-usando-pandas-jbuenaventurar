@@ -206,16 +206,9 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    pregunta11=tbl1.copy()
-    pregunta11['_c4']= pregunta11['_c4'].apply(lambda x: str(x))
-    def hacer_lista(data):
-        lista = list(data['_c4'])
-        lista.sort()
-        return ','.join(lista)
-    df = pregunta11.groupby('_c0').apply(hacer_lista)
-    df = pd.DataFrame(df)
-    df.columns=['_c4']
-    return df
+    pregunta11=tbl1.groupby('_c0').agg({'_c4': lambda x: ','.join(sorted(list(x.astype(str))))})
+    pregunta11= pregunta11.reset_index()
+    return pregunta11
 pregunta_11()
 
 def pregunta_12():
@@ -233,16 +226,11 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    pregunta12=tbl2.copy()
+    pregunta12=tbl2
     pregunta12['_c5']= pregunta12['_c5a']+':'+pregunta12['_c5b'].astype(str)
-    def hacer_lista(data):
-        lista = list(data['_c5'])
-        lista.sort()
-        return ','.join(lista)
-    df = pregunta12.groupby('_c0').apply(hacer_lista)
-    df = pd.DataFrame(df)
-    df.columns = ['_c5']
-    return df
+    pregunta12= tbl2.groupby('_c0').agg({'_c5': lambda x: ','.join(sorted(list(x.astype(str))))})
+    pregunta12= pregunta12.reset_index()
+    return pregunta12
 pregunta_12()
 
 def pregunta_13():
